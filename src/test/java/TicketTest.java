@@ -25,4 +25,49 @@ public class TicketTest {
         TicketInformation[] actual = manager.findAll("MSK", "SPB");
         Assertions.assertArrayEquals(expected, actual);
     }
+
+    @Test
+    public void testSeveralTickets() {
+        TicketRepository repository = new TicketRepository();
+        TicketManager manager = new TicketManager(repository);
+        TicketInformation ticket1 = new TicketInformation(1, "MSK", "SPB", 350);
+        TicketInformation ticket2 = new TicketInformation(2, "SPB", "KAL", 150);
+        TicketInformation ticket3 = new TicketInformation(3, "KAL", "SAR", 200);
+        TicketInformation ticket4 = new TicketInformation(4, "MSK", "SPB", 250);
+
+        manager.add(ticket1);
+        manager.add(ticket2);
+        manager.add(ticket3);
+        manager.add(ticket4);
+
+        TicketInformation[] expected = {ticket1, ticket2, ticket3, ticket4};
+        TicketInformation[] actual = repository.findAll();
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testOneTickets() {
+        TicketRepository repository = new TicketRepository();
+        TicketManager manager = new TicketManager(repository);
+        TicketInformation ticket1 = new TicketInformation(1, "ENG", "USA", 1000);
+
+        manager.add(ticket1);
+
+        TicketInformation[] expected = {ticket1};
+        TicketInformation[] actual = manager.findAll("ENG", "USA");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testZeroTickets() {
+        TicketRepository repository = new TicketRepository();
+        TicketManager manager = new TicketManager(repository);
+        TicketInformation ticket1 = new TicketInformation(1, "ENG", "USA", 1000);
+
+        manager.add(ticket1);
+
+        TicketInformation[] expected = {ticket1};
+        TicketInformation[] actual = repository.findAll();
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
